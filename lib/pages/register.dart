@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pelayanan_laundri/utils/constants.dart';
+import 'package:pelayanan_laundri/utils/helper.dart';
 import 'package:pelayanan_laundri/widgets/app_button.dart';
 import 'package:pelayanan_laundri/widgets/input_widget.dart';
 
-class Register extends StatelessWidget {
-  const Register({super.key});
+class Register extends StatefulWidget {
+  const Register({Key? key}) : super(key: key);
+
+  @override
+  State<Register> createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
+  final GlobalKey<FormState> _formKey =
+      GlobalKey<FormState>(); // Buat global key untuk Form
+  late String _email;
+  late String _password;
+  late String _confirmPassword;
+  late String _nama;
 
   @override
   Widget build(BuildContext context) {
@@ -52,26 +64,29 @@ class Register extends StatelessWidget {
                               Text(
                                 "CREATE YOUR",
                                 style: TextStyle(
-                                    fontSize: 40.0,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w900,
-                                    fontFamily: 'FontPuppins'),
+                                  fontSize: 40.0,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w900,
+                                  fontFamily: 'FontPuppins',
+                                ),
                               ),
                               Text(
                                 "ACCOUNT",
                                 style: TextStyle(
-                                    fontSize: 40.0,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w900,
-                                    fontFamily: 'FontPuppins'),
+                                  fontSize: 40.0,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w900,
+                                  fontFamily: 'FontPuppins',
+                                ),
                               ),
                               Text(
-                                textAlign: TextAlign.center,
                                 "Laundree! sudah menantikan kamu, ayo mulai laporkan keadaan terkini.",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: Colors.white,
-                                    fontFamily: 'FontPuppins'),
+                                  fontSize: 14.0,
+                                  color: Colors.white,
+                                  fontFamily: 'FontPuppins',
+                                ),
                               ),
                             ],
                           ),
@@ -86,53 +101,87 @@ class Register extends StatelessWidget {
                     child: Container(
                       width: double.infinity,
                       decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30.0),
-                            topRight: Radius.circular(30.0),
-                          ),
-                          color: Colors.white),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30.0),
+                          topRight: Radius.circular(30.0),
+                        ),
+                        color: Colors.white,
+                      ),
                       padding: const EdgeInsets.all(24.0),
                       child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            //Input Widget Textfield
-                            const InputWidget(
-                              topLabel: "Nama Lengkap",
-                              hintText: "Masukan Nama Lengkap",
-                            ),
-                            const SizedBox(
-                              height: 20.0,
-                            ),
-                            const InputWidget(
-                              topLabel: "Email",
-                              hintText: "Masukan email",
-                            ),
-                            SizedBox(
-                              height: 20.0,
-                            ),
-                            const InputWidget(
-                              topLabel: "Password",
-                              obscureText: true,
-                              hintText: "Masukan password",
-                            ),
-                            const SizedBox(
-                              height: 20.0,
-                            ),
-                            const InputWidget(
-                              topLabel: "Konfirmasi Password",
-                              obscureText: true,
-                              hintText: "Masukan password",
-                            ),
-                            const SizedBox(
-                              height: 20.0,
-                            ),
-                            AppButton(
-                              type: ButtonType.PRIMARY,
-                              text: "Daftar",
-                              onPressed: () {},
-                            )
-                          ],
+                        child: Form(
+                          // Tambahkan widget Form di sini
+                          key:
+                              _formKey, // Set key Form dengan _formKey yang telah dibuat
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              InputWidget(keyboardType: TextInputType.name,
+                                topLabel: "Nama Lengkap",
+                                hintText: "Masukan Nama Lengkap",
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Nama lengkap tidak boleh kosong';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(
+                                height: 15.0,
+                              ),
+                              InputWidget(keyboardType: TextInputType.emailAddress,
+                                topLabel: "Email",
+                                hintText: "Masukan email",
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Email tidak boleh kosong';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              SizedBox(
+                                height: 15.0,
+                              ),
+                              InputWidget(keyboardType: TextInputType.visiblePassword,
+                                topLabel: "Password",
+                                obscureText: true,
+                                hintText: "Masukan password",
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Password tidak boleh kosong';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(
+                                height: 15.0,
+                              ),
+                              InputWidget(keyboardType: TextInputType.visiblePassword,
+                                topLabel: "Konfirmasi Password",
+                                obscureText: true,
+                                hintText: "Masukan password",
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Konfirmasi password tidak boleh kosong';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(
+                                height: 20.0,
+                              ),
+                              AppButton(
+                                type: ButtonType.PRIMARY,
+                                text: "Daftar",
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    _formKey.currentState!.save();
+                                    nextScreen(context, "/dashboard");
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

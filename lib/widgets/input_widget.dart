@@ -6,14 +6,18 @@ class InputWidget extends StatelessWidget {
   final double height;
   final String topLabel;
   final bool obscureText;
+  final FormFieldValidator<String>? validator;
+  final TextInputType keyboardType; // Tambahkan properti keyboardType
 
   const InputWidget({
-    super.key,
+    Key? key,
     required this.hintText,
     this.height = 48.0,
     this.topLabel = "",
     this.obscureText = false,
-  });
+    this.validator,
+    required this.keyboardType, // Tambahkan parameter keyboardType ke constructor
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +34,7 @@ class InputWidget extends StatelessWidget {
           ),
           child: TextFormField(
             obscureText: obscureText,
+            keyboardType: keyboardType, // Set keyboardType sesuai dengan parameter
             decoration: InputDecoration(
               enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(
@@ -47,6 +52,7 @@ class InputWidget extends StatelessWidget {
                 color: Color.fromRGBO(105, 108, 121, 0.7),
               ),
             ),
+            validator: validator,
           ),
         )
       ],

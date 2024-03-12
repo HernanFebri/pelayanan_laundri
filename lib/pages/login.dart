@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pelayanan_laundri/utils/constants.dart';
 import 'package:pelayanan_laundri/utils/helper.dart';
 import 'package:pelayanan_laundri/widgets/app_button.dart';
 import 'package:pelayanan_laundri/widgets/input_widget.dart';
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+class Login extends StatefulWidget {
+  const Login({Key? key}) : super(key: key);
+
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late String _email;
+  late String _password;
 
   @override
   Widget build(BuildContext context) {
@@ -94,46 +102,74 @@ class Login extends StatelessWidget {
                           color: Colors.white),
                       padding: const EdgeInsets.all(24.0),
                       child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            //Input Widget Textfield
-                            const InputWidget(
-                              topLabel: "Email",
-                              hintText: "Masukan email",
-                            ),
-                            const SizedBox(
-                              height: 20.0,
-                            ),
-                            const InputWidget(
-                              topLabel: "Password",
-                              obscureText: true,
-                              hintText: "Masukan password",
-                            ),
-                            const SizedBox(
-                              height: 20.0,
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: const Text(
-                                "Lupa Password ?",
-                                textAlign: TextAlign.right,
-                                style: TextStyle(
-                                  color: Colors.black45,
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              // Input Widget Textfield for Email
+                              InputWidget(keyboardType: TextInputType.emailAddress,
+                                topLabel: "Email",
+                                hintText: "Masukan email",
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Email tidak boleh kosong';
+                                  }
+                                  return null;
+                                },
+                                // onSaved: (value) {
+                                //   _email = value!;
+                                // },
+                              ),
+                              const SizedBox(
+                                height: 20.0,
+                              ),
+                              // Input Widget Textfield for Password
+                              InputWidget(keyboardType: TextInputType.visiblePassword,
+                                topLabel: "Password",
+                                obscureText: true,
+                                hintText: "Masukan password",
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Password tidak boleh kosong';
+                                  }
+                                  return null;
+                                },
+                                // onSaved: (value) {
+                                //   _password = value!;
+                                // },
+                              ),
+                              const SizedBox(
+                                height: 20.0,
+                              ),
+                              GestureDetector(
+                                onTap: () {},
+                                child: const Text(
+                                  "Lupa Password ?",
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                    color: Colors.black45,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 20.0,
-                            ),
-                            AppButton(
-                              type: ButtonType.PRIMARY,
-                              text: "Masuk",
-                              onPressed: () {
-                                nextScreen(context, "/dashboard");
-                              },
-                            )
-                          ],
+                              const SizedBox(
+                                height: 20.0,
+                              ),
+                              AppButton(
+                                type: ButtonType.PRIMARY,
+                                text: "Masuk",
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    _formKey.currentState!.save();
+                                    // Perform login logic here
+                                    // For example:
+                                    // login(_email, _password);
+                                    nextScreen(context, "/dashboard");
+                                  }
+                                },
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),

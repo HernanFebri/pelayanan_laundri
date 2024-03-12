@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pelayanan_laundri/pages/dashboard.dart';
-import 'package:pelayanan_laundri/pages/home.dart';
+import 'package:pelayanan_laundri/pages/onboarding.dart';
 import 'package:pelayanan_laundri/pages/login.dart';
 import 'package:pelayanan_laundri/pages/register.dart';
 import 'package:pelayanan_laundri/utils/constants.dart';
@@ -35,7 +35,7 @@ Route<dynamic> _onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
     case "/":
       return MaterialPageRoute(builder: (BuildContext context) {
-        return const Home();
+        return const Onboarding();
       });
     case "/login":
       return MaterialPageRoute(builder: (BuildContext context) {
@@ -51,7 +51,7 @@ Route<dynamic> _onGenerateRoute(RouteSettings settings) {
       });
     default:
       return MaterialPageRoute(builder: (BuildContext context) {
-        return const Home();
+        return const Onboarding();
       });
   }
 }

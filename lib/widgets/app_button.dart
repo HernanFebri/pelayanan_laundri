@@ -25,7 +25,7 @@ class AppButton extends StatelessWidget {
           boxShadow: const [
             BoxShadow(
               color: Color.fromRGBO(169, 176, 185, 0.42),
-              spreadRadius: 0,
+              spreadRadius: 3.0,
               blurRadius: 8.0,
               offset: Offset(0, 2),
             ),
@@ -34,9 +34,9 @@ class AppButton extends StatelessWidget {
         child: Center(
           child: Text(
             this.text,
-            style: GoogleFonts.roboto(
+            style: GoogleFonts.poppins(
                 color: getTextColor(type),
-                fontSize: 16.0,
+                fontSize: 15.0,
                 fontWeight: FontWeight.w600),
           ),
         ),
