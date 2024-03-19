@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pelayanan_laundri/pages/home.dart';
-import 'package:pelayanan_laundri/pages/profile.dart';
-import 'package:pelayanan_laundri/pages/tambah.dart';
+import 'package:pelayanan_laundri/pages/beranda_page.dart';
+import 'package:pelayanan_laundri/pages/profile_page.dart';
+import 'package:pelayanan_laundri/pages/riwayat_page.dart';
 import 'package:pelayanan_laundri/utils/constants.dart';
 
 class Dashboard extends StatefulWidget {
@@ -60,11 +60,11 @@ class _DashboardState extends State<Dashboard> {
   Widget _getPage(int index) {
     switch (index) {
       case 0:
-        return Home();
+        return const BerandaPage();
       case 1:
-        return Tambah();
+        return const RiwayatPage();
       case 2:
-        return Profile();
+        return const ProfilePage();
       default:
         return const Center(
           child: Text(

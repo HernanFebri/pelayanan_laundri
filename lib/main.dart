@@ -1,13 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pelayanan_laundri/pages/dashboard.dart';
 import 'package:pelayanan_laundri/pages/onboarding.dart';
-import 'package:pelayanan_laundri/pages/login.dart';
-import 'package:pelayanan_laundri/pages/register.dart';
+import 'package:pelayanan_laundri/pages/login_page.dart';
+import 'package:pelayanan_laundri/pages/register_page.dart';
 import 'package:pelayanan_laundri/utils/constants.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -39,11 +42,11 @@ Route<dynamic> _onGenerateRoute(RouteSettings settings) {
       });
     case "/login":
       return MaterialPageRoute(builder: (BuildContext context) {
-        return Login();
+        return LoginPage();
       });
     case "/register":
       return MaterialPageRoute(builder: (BuildContext context) {
-        return Register();
+        return RegisterPage();
       });
     case "/dashboard":
       return MaterialPageRoute(builder: (BuildContext context) {

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:pelayanan_laundri/pages/pelanggan.dart';
 import 'package:pelayanan_laundri/pages/produk.dart';
 import 'package:pelayanan_laundri/utils/constants.dart';
 import 'package:pelayanan_laundri/widgets/card_button.dart';
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class BerandaPage extends StatefulWidget {
+  const BerandaPage({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  State<BerandaPage> createState() => _BerandaPageState();
 }
 
-class _HomeState extends State<Home> {
+class _BerandaPageState extends State<BerandaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,45 +34,10 @@ class _HomeState extends State<Home> {
                   bottomRight: Radius.circular(20),
                   bottomLeft: Radius.circular(20),
                 ),
-              ),
-              child: const Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(
-                    child: CircleAvatar(
-                      maxRadius: 50,
-                      minRadius: 50,
-                      backgroundColor: Colors.white,
-                      backgroundImage: AssetImage("assets/images/logo.png"),
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Welcome , User",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "Owner Laundry",
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                image: DecorationImage(
+                  image: AssetImage('assets/images/frameberanda.png'),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(height: 50),
@@ -94,7 +60,14 @@ class _HomeState extends State<Home> {
                   CardButton(
                     'PELANGGAN',
                     'assets/images/pelanggan.png',
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Pelanggan(),
+                        ),
+                      );
+                    },
                   ),
                   CardButton(
                     'LAPORAN',

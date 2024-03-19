@@ -7,7 +7,8 @@ class InputWidget extends StatelessWidget {
   final String topLabel;
   final bool obscureText;
   final FormFieldValidator<String>? validator;
-  final TextInputType keyboardType; // Tambahkan properti keyboardType
+  final TextInputType keyboardType;
+  final TextEditingController? controller; // Tambahkan properti controller
 
   const InputWidget({
     Key? key,
@@ -16,7 +17,8 @@ class InputWidget extends StatelessWidget {
     this.topLabel = "",
     this.obscureText = false,
     this.validator,
-    required this.keyboardType, // Tambahkan parameter keyboardType ke constructor
+    required this.keyboardType,
+    this.controller, // Tambahkan parameter controller ke constructor
   }) : super(key: key);
 
   @override
@@ -33,8 +35,9 @@ class InputWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: TextFormField(
+            controller: controller, // Set controller
             obscureText: obscureText,
-            keyboardType: keyboardType, // Set keyboardType sesuai dengan parameter
+            keyboardType: keyboardType,
             decoration: InputDecoration(
               enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(

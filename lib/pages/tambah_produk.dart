@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pelayanan_laundri/utils/constants.dart';
 import 'package:pelayanan_laundri/widgets/app_button.dart';
 import 'package:pelayanan_laundri/widgets/input_widget.dart';
 
@@ -13,8 +14,26 @@ class _TambahProdukState extends State<TambahProduk> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Tambah Produk'),
+        title: Text(
+          'Tambah Produk',
+          style: TextStyle(
+              color: Constants.primaryColor,
+              fontWeight: FontWeight.w600,
+              fontFamily: 'FontPoppins'),
+        ),
+        toolbarHeight: 80,
+        leading: IconButton(
+          // Menambahkan tombol kembali dengan ikon keyboard arrow left
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.keyboard_arrow_left,
+            size: 50.0,
+          ),
+        ),
       ),
       body: Container(
         padding: const EdgeInsets.all(24.0),
@@ -28,7 +47,7 @@ class _TambahProdukState extends State<TambahProduk> {
                 hintText: 'Masukan Nama Produk',
               ),
               const SizedBox(
-                height: 20.0,
+                height: 10.0,
               ),
               const InputWidget(
                 keyboardType: TextInputType.number,
@@ -36,7 +55,7 @@ class _TambahProdukState extends State<TambahProduk> {
                 hintText: '0',
               ),
               const SizedBox(
-                height: 20.0,
+                height: 30.0,
               ),
               AppButton(
                   type: ButtonType.PRIMARY, onPressed: () {}, text: 'Simpan')

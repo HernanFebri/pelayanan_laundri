@@ -1,20 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pelayanan_laundri/utils/constants.dart';
-import 'package:pelayanan_laundri/utils/helper.dart';
 import 'package:pelayanan_laundri/widgets/app_button.dart';
 import 'package:pelayanan_laundri/widgets/input_widget.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+class LupaPassword extends StatefulWidget {
+  const LupaPassword({Key? key}) : super(key: key);
 
   @override
-  _LoginState createState() => _LoginState();
+  State<LupaPassword> createState() => _LupaPasswordState();
 }
 
-class _LoginState extends State<Login> {
+class _LupaPasswordState extends State<LupaPassword> {
+  String email = "";
+  TextEditingController emailcontroller = TextEditingController();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late String _email;
-  late String _password;
+
+  resetPassword() async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Reset Password"),
+            content: Text(
+              "Permintaan untuk mereset password telah dikirim ke alamat email Anda. Silakan periksa kotak masuk Anda.",
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "user-not-found") {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Reset Password"),
+              content: Text(
+                "Tidak ada pengguna yang ditemukan untuk email yang dimasukkan. Pastikan email yang Anda masukkan benar.",
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +107,7 @@ class _LoginState extends State<Login> {
                           child: Column(
                             children: [
                               Text(
-                                "LOGIN",
+                                "LUPA",
                                 style: TextStyle(
                                     fontSize: 40.0,
                                     color: Colors.white,
@@ -67,7 +115,7 @@ class _LoginState extends State<Login> {
                                     fontFamily: 'FontPuppins'),
                               ),
                               Text(
-                                "ACCOUNT",
+                                "PASSWORD",
                                 style: TextStyle(
                                     fontSize: 40.0,
                                     color: Colors.white,
@@ -107,64 +155,26 @@ class _LoginState extends State<Login> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              // Input Widget Textfield for Email
-                              InputWidget(keyboardType: TextInputType.emailAddress,
+                              InputWidget(
+                                controller: emailcontroller,
+                                keyboardType: TextInputType.emailAddress,
                                 topLabel: "Email",
                                 hintText: "Masukan email",
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Email tidak boleh kosong';
-                                  }
-                                  return null;
-                                },
-                                // onSaved: (value) {
-                                //   _email = value!;
-                                // },
-                              ),
-                              const SizedBox(
-                                height: 20.0,
-                              ),
-                              // Input Widget Textfield for Password
-                              InputWidget(keyboardType: TextInputType.visiblePassword,
-                                topLabel: "Password",
-                                obscureText: true,
-                                hintText: "Masukan password",
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Password tidak boleh kosong';
-                                  }
-                                  return null;
-                                },
-                                // onSaved: (value) {
-                                //   _password = value!;
-                                // },
-                              ),
-                              const SizedBox(
-                                height: 20.0,
-                              ),
-                              GestureDetector(
-                                onTap: () {},
-                                child: const Text(
-                                  "Lupa Password ?",
-                                  textAlign: TextAlign.right,
-                                  style: TextStyle(
-                                    color: Colors.black45,
-                                  ),
-                                ),
                               ),
                               const SizedBox(
                                 height: 20.0,
                               ),
                               AppButton(
                                 type: ButtonType.PRIMARY,
-                                text: "Masuk",
+                                text: "Kirim",
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
-                                    _formKey.currentState!.save();
-                                    // Perform login logic here
-                                    // For example:
-                                    // login(_email, _password);
-                                    nextScreen(context, "/dashboard");
+                                    setState(() {
+                                      email = emailcontroller.text;
+                                    });
+
+                                    resetPassword();
+                                    emailcontroller.text = '';
                                   }
                                 },
                               )

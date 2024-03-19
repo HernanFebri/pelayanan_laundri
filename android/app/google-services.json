@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "7732363659",
+    "project_id": "aplikasipurpleclean",
+    "storage_bucket": "aplikasipurpleclean.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7732363659:android:711914ea4fffa0827caf8e",
+        "android_client_info": {
+          "package_name": "com.example.pelayanan_laundri"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlGgT1yBiZ_myl0tqN9RLiyZX_iMux9xs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

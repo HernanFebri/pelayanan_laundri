@@ -1,7 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:pelayanan_laundri/pages/tambahproduk.dart';
+import 'package:pelayanan_laundri/pages/tambah_produk.dart';
 import 'package:pelayanan_laundri/utils/constants.dart';
 
 class Produk extends StatefulWidget {
@@ -63,11 +61,13 @@ class _ProdukState extends State<Produk> {
                     ),
                   ),
                   Container(
+                    color: Colors.white,
                     child: const Center(
                       child: Text('SATUAN'),
                     ),
                   ),
                   Container(
+                    color: Colors.white,
                     child: const Center(
                       child: Text('PARFUM'),
                     ),

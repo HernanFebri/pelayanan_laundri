@@ -5,14 +5,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pelayanan_laundri/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfilePageState extends State<ProfilePage> {
   late SharedPreferences _prefs;
   late String _userName = 'Nama';
   late String _userRole = 'Jabatan';

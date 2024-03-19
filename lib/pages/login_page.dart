@@ -1,23 +1,53 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pelayanan_laundri/pages/dashboard.dart';
+import 'package:pelayanan_laundri/pages/lupapassword.dart';
 import 'package:pelayanan_laundri/utils/constants.dart';
-import 'package:pelayanan_laundri/utils/helper.dart';
 import 'package:pelayanan_laundri/widgets/app_button.dart';
 import 'package:pelayanan_laundri/widgets/input_widget.dart';
 
-class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<Register> createState() => _RegisterState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _RegisterState extends State<Register> {
-  final GlobalKey<FormState> _formKey =
-      GlobalKey<FormState>(); // Buat global key untuk Form
-  late String _email;
-  late String _password;
-  late String _confirmPassword;
-  late String _nama;
+class _LoginPageState extends State<LoginPage> {
+  String email = "", password = "";
+
+  TextEditingController emailcontroller = new TextEditingController();
+  TextEditingController passwordcontroller = new TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  signIn() async {
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Dashboard(),
+          ));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'User-Not-Found') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Constants.primaryColor,
+            content: Text('No User Found for that Email'),
+          ),
+        );
+      } else if (e.code == 'Wrong-password') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Constants.primaryColor,
+            content: Text('Wrong Password Provided by user'),
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,31 +92,28 @@ class _RegisterState extends State<Register> {
                           child: Column(
                             children: [
                               Text(
-                                "CREATE YOUR",
+                                "LOGIN",
                                 style: TextStyle(
-                                  fontSize: 40.0,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w900,
-                                  fontFamily: 'FontPuppins',
-                                ),
+                                    fontSize: 40.0,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w900,
+                                    fontFamily: 'FontPuppins'),
                               ),
                               Text(
                                 "ACCOUNT",
                                 style: TextStyle(
-                                  fontSize: 40.0,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w900,
-                                  fontFamily: 'FontPuppins',
-                                ),
+                                    fontSize: 40.0,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w900,
+                                    fontFamily: 'FontPuppins'),
                               ),
                               Text(
-                                "Laundree! sudah menantikan kamu, ayo mulai laporkan keadaan terkini.",
                                 textAlign: TextAlign.center,
+                                "Laundree! sudah menantikan kamu, ayo mulai laporkan keadaan terkini.",
                                 style: TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.white,
-                                  fontFamily: 'FontPuppins',
-                                ),
+                                    fontSize: 14.0,
+                                    color: Colors.white,
+                                    fontFamily: 'FontPuppins'),
                               ),
                             ],
                           ),
@@ -101,35 +128,22 @@ class _RegisterState extends State<Register> {
                     child: Container(
                       width: double.infinity,
                       decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30.0),
-                          topRight: Radius.circular(30.0),
-                        ),
-                        color: Colors.white,
-                      ),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30.0),
+                            topRight: Radius.circular(30.0),
+                          ),
+                          color: Colors.white),
                       padding: const EdgeInsets.all(24.0),
                       child: SingleChildScrollView(
                         child: Form(
-                          // Tambahkan widget Form di sini
-                          key:
-                              _formKey, // Set key Form dengan _formKey yang telah dibuat
+                          key: _formKey,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              InputWidget(keyboardType: TextInputType.name,
-                                topLabel: "Nama Lengkap",
-                                hintText: "Masukan Nama Lengkap",
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Nama lengkap tidak boleh kosong';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              const SizedBox(
-                                height: 15.0,
-                              ),
-                              InputWidget(keyboardType: TextInputType.emailAddress,
+                              // Input Widget Textfield for Email
+                              InputWidget(
+                                controller: emailcontroller,
+                                keyboardType: TextInputType.emailAddress,
                                 topLabel: "Email",
                                 hintText: "Masukan email",
                                 validator: (value) {
@@ -138,11 +152,17 @@ class _RegisterState extends State<Register> {
                                   }
                                   return null;
                                 },
+                                // onSaved: (value) {
+                                //   _email = value!;
+                                // },
                               ),
-                              SizedBox(
-                                height: 15.0,
+                              const SizedBox(
+                                height: 20.0,
                               ),
-                              InputWidget(keyboardType: TextInputType.visiblePassword,
+                              // Input Widget Textfield for Password
+                              InputWidget(
+                                controller: passwordcontroller,
+                                keyboardType: TextInputType.visiblePassword,
                                 topLabel: "Password",
                                 obscureText: true,
                                 hintText: "Masukan password",
@@ -152,34 +172,45 @@ class _RegisterState extends State<Register> {
                                   }
                                   return null;
                                 },
+                                // onSaved: (value) {
+                                //   _password = value!;
+                                // },
                               ),
                               const SizedBox(
-                                height: 15.0,
+                                height: 20.0,
                               ),
-                              InputWidget(keyboardType: TextInputType.visiblePassword,
-                                topLabel: "Konfirmasi Password",
-                                obscureText: true,
-                                hintText: "Masukan password",
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Konfirmasi password tidak boleh kosong';
-                                  }
-                                  return null;
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => LupaPassword(),
+                                      ));
                                 },
+                                child: const Text(
+                                  "Lupa Password ?",
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                    color: Colors.black45,
+                                  ),
+                                ),
                               ),
                               const SizedBox(
                                 height: 20.0,
                               ),
                               AppButton(
                                 type: ButtonType.PRIMARY,
-                                text: "Daftar",
+                                text: "Masuk",
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
-                                    _formKey.currentState!.save();
-                                    nextScreen(context, "/dashboard");
+                                    setState(() {
+                                      email = emailcontroller.text;
+                                      password = passwordcontroller.text;
+                                    });
                                   }
+                                  signIn();
                                 },
-                              ),
+                              )
                             ],
                           ),
                         ),
