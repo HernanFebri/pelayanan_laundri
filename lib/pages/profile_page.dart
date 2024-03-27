@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -59,7 +60,12 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _signOut() async {
-    Navigator.pop(context); // Menutup halaman profil setelah keluar
+    try {
+      await FirebaseAuth.instance.signOut();
+      Navigator.pop(context);
+    } catch (e) {
+      print('Error signin out : $e');
+    }
   }
 
   @override
@@ -219,9 +225,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                       children: [
                                         ListTile(
                                           title: Text(
+                                            'Tentang Kami',
+                                            textAlign: TextAlign.justify,
+                                            style: TextStyle(
+                                                fontFamily: 'FontPoppins',
+                                                fontSize: 32,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          subtitle: Text(
                                             'Purple Clean hadir dengan versi baru yang lebih canggih untuk mempermudah hidup Anda. Dengan desain antarmuka yang lebih intuitif, pilihan layanan yang lebih luas, jadwal penjemputan yang fleksibel, notifikasi langsung, pilihan pembayaran yang aman, dan program loyalitas yang menguntungkan, kami memberikan pengalaman laundry yang menyenangkan dan efisien. Dapatkan keunggulan Purple Clean dalam kualitas terbaik, lingkungan ramah, serta kemudahan dan kepuasan pelanggan. Rasakan perbedaannya sekarang dengan mengunduh aplikasi Purple Clean!',
                                             textAlign: TextAlign.justify,
-                                            style: TextStyle(fontSize: 16),
+                                            style: TextStyle(
+                                                fontFamily: 'FontPoppins',
+                                                fontSize: 16),
                                           ),
                                         ),
                                       ],
@@ -230,8 +246,35 @@ class _ProfilePageState extends State<ProfilePage> {
                                 },
                               );
                             } else if (index == 2) {
-                              // Sign out
-                              _signOut();
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: const Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                          "Apakah Anda Ingin Keluar Dari Akun Ini?"),
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pop(); // Tutup AlertDialog
+                                        },
+                                        child: const Text("Batal"),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pop(); // Tutup AlertDialog
+                                          _signOut(); // Lakukan logout
+                                        },
+                                        child: const Text("Keluar"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
                             }
                           },
                         ),

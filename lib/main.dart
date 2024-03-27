@@ -1,3 +1,4 @@
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +12,9 @@ import 'package:pelayanan_laundri/utils/constants.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  // Check user authentication status
+  // User? user = FirebaseAuth.instance.currentUser;
   runApp(MyApp());
 }
 
@@ -42,15 +46,15 @@ Route<dynamic> _onGenerateRoute(RouteSettings settings) {
       });
     case "/login":
       return MaterialPageRoute(builder: (BuildContext context) {
-        return LoginPage();
+        return const LoginPage();
       });
     case "/register":
       return MaterialPageRoute(builder: (BuildContext context) {
-        return RegisterPage();
+        return const RegisterPage();
       });
     case "/dashboard":
       return MaterialPageRoute(builder: (BuildContext context) {
-        return Dashboard();
+        return const Dashboard();
       });
     default:
       return MaterialPageRoute(builder: (BuildContext context) {
